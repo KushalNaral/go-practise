@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Go Test</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f4f4f4;
+      }
+
+      .pagination {
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      .pagination button {
+        padding: 8px 12px;
+        margin: 0 5px;
+        cursor: pointer;
+      }
+
+      .pagination button:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+
+      #searchBox {
+        margin-bottom: 20px;
+        padding: 8px;
+        font-size: 16px;
+        width: 100%;
+        max-width: 300px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>User List</h2>
+    <input
+      type="text"
+      id="searchBox"
+      placeholder="Search by name or email"
+      oninput="searchUsers()"
+    />
+
+    <table id="userTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="pagination">
+      <button id="prevButton" onclick="changePage('prev')" disabled>
+        Previous
+      </button>
+      <span id="pageInfo">Page 1</span>
+      <button id="nextButton" onclick="changePage('next')">Next</button>
+    </div>
+
+    <script>
+      const apiUrl = "http://localhost:8080/users";
+      let currentPage = 1;
+      const perPage = 5;
+      let searchQuery = "";
+
+      function updateTable(users) {
+        const userTableBody = document.querySelector("#userTable tbody");
+        userTableBody.innerHTML = "";
+
+        if (Array.isArray(users) && users.length > 0) {
+          users.forEach((user) => {
+            const row = document.createElement("tr");
+
+            const nameCell = document.createElement("td");
+            nameCell.textContent = user.Name;
+            row.appendChild(nameCell);
+
+            const emailCell = document.createElement("td");
+            emailCell.textContent = user.Email;
+            row.appendChild(emailCell);
+
+            userTableBody.appendChild(row);
+          });
+        } else {
+          const noDataRow = document.createElement("tr");
+          const noDataCell = document.createElement("td");
+          noDataCell.setAttribute("colspan", "2");
+          noDataCell.textContent = "No users found.";
+          noDataRow.appendChild(noDataCell);
+          userTableBody.appendChild(noDataRow);
+        }
+      }
+
+      function fetchUsers(page, search) {
+        const url = `${apiUrl}?per_page=${perPage}&page=${page}&search=${encodeURIComponent(search || "")}`;
+
+        fetch(url)
+          .then((res) => res.json())
+          .then((data) => {
+            const users = data.Data || [];
+            const meta = data.Meta || {};
+
+            updateTable(users);
+
+            document.getElementById("pageInfo").textContent =
+              `Page ${meta.Page}`;
+            document.getElementById("prevButton").disabled = meta.Page <= 1;
+            document.getElementById("nextButton").disabled =
+              meta.CurrentTotal < perPage;
+          })
+          .catch((err) => {
+            console.error("Error fetching users:", err);
+          });
+      }
+
+      function changePage(direction) {
+        if (direction === "prev") {
+          currentPage--;
+        } else if (direction === "next") {
+          currentPage++;
+        }
+
+        fetchUsers(currentPage, searchQuery);
+      }
+
+      function searchUsers() {
+        searchQuery = document.getElementById("searchBox").value;
+        currentPage = 1;
+        fetchUsers(currentPage, searchQuery);
+      }
+
+      fetchUsers(currentPage, searchQuery);
+    </script>
+  </body>
+</html>

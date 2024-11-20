@@ -1,0 +1,70 @@
+{
+ "Id": "1732134702657531788",
+ "Name": "John Doe",
+ "Email": "john@doe.com",
+ "Contact": "98681002100",
+ "Experiences": [
+  {
+   "Title": "Intern At XYZ",
+   "Duration": 3
+  },
+  {
+   "Title": "Junior Engineer",
+   "Duration": 24
+  },
+  {
+   "Title": "Mid Level Analyst",
+   "Duration": 11
+  }
+ ],
+ "Income": 200000,
+ "Earnings": [
+  {
+   "Date": "2024-11-20",
+   "Amount": 47400,
+   "Deductible": 5610,
+   "Bonus": 0,
+   "SkillIncentive": 3000,
+   "NetPayable": 41790,
+   "Contribution": {
+    "ProvidentFund": 4800,
+    "SST": 416,
+    "RT": 293,
+    "CIT": 0,
+    "AttendanceDeduction": 0,
+    "WelfareFund": 100
+   }
+  }
+ ],
+ "Notes": [
+  {
+   "CreatedAt": "2024-11-21T02:16:42.65753529+05:45",
+   "CreatedBy": "Adam",
+   "Note": "John has been early quite nicely",
+   "Priority": {
+    "Name": "moderate",
+    "Level": 3
+   }
+  },
+  {
+   "CreatedAt": "2024-11-21T02:16:42.65753534+05:45",
+   "CreatedBy": "HR",
+   "Note": "Need to attend his leave counts and requests",
+   "Priority": {
+    "Name": "severe",
+    "Level": 5
+   }
+  },
+  {
+   "CreatedAt": "2024-11-21T02:16:42.657535379+05:45",
+   "CreatedBy": "Rubi",
+   "Note": "Need to ask him for some tickets.",
+   "Priority": {
+    "Name": "minimal",
+    "Level": 1
+   }
+  }
+ ],
+ "JoinedAt": "2024-11-21T02:16:42.657535418+05:45",
+ "IsPresent": false
+}
